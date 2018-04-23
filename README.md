@@ -1,5 +1,5 @@
 # c4s
-Corner 4 Student Ruby on Rails Application (semester project for a course Advanced Web technologies)
+Corner 4 Student is a Ruby on Rails Application (semester project for a course Advanced Web technologies)
 
 The purpose was to connect students on a platform, where they can share books, notes, and ask/answer question related to anything
 
