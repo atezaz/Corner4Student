@@ -1,0 +1,248 @@
+<div class="container">
+  <p class="row">
+    <!-- Title -->
+    <h2 class="page-header"><%= @offer.title %></h2>
+    <!-- Blog Offer Content Column -->
+    <div class="ui buttons">
+      <button class="big ui button" onclick="RedirectToOffers()">
+        <i class="arrow circle outline left icon"></i>Back</button>
+      <% if @offer.user == current_user %>
+          <div class="or"></div>
+          <button class="big ui button" onclick="RedirectToEdit()">
+            <i class="edit left icon"></i>Edit</button>
+          <div class="or"></div>
+          <button class="big ui button" data-toggle="modal" data-target="#myModal" ><i class="remove icon"></i>Delete</button>
+      <% end %>
+    </div>
+
+    <hr>
+
+    <!-- Date/Time and posted by who-->
+    <p><span class="glyphicon glyphicon-time"></span> Posted on <%= @offer.created_at.to_datetime.strftime("%b %d, %Y") %> by <a href="<%= profile_path(@offer.user_id) %>"><%= @offer.user.username %></a></p>
+    <hr>
+
+  <table style="width:100%; height: 100%">
+    <tr>
+      <% if @offer.forSale == "sale" %>
+          <!--along with td image is also responsive now-->
+          <td style="width: 250px">
+            <% if @offer.image_file_name.nil? %>
+                <span style="margin-right: 20px">  <%= image_tag('/No_Image.png', width: '92%', class: "img-rounded") %> </span>
+            <% else %>
+                <span style="margin-right: 20px"><%= image_tag(@offer.image, :alt => "No Image", width: '92%', class: "img-rounded") %></span>
+            <% end %>
+          </td>
+          <td style="vertical-align: text-top;">
+            <p>
+              <strong>Description:</strong>
+              <%= @offer.detail.html_safe %>
+            </p>
+          </td>
+    </tr>
+    <tr>
+      <td class="text-center" style="padding-top: 10px" >
+        <% if !current_user.nil? && current_user.id != @offer.user_id  %>
+            <div style="margin-top:30px; text-align: center;">
+              <button class="big ui blue button" data-toggle="modal" data-target="#Contact"><i class="help circle icon"></i>Contact Seller</button>
+            </div>
+        <% end %>
+      </td>
+      <td>
+        <strong>Cost:
+          <label id="p_Modified_Teal"> <spanp>&#8364;  </spanp>
+            <% if @offer.cost.nil? %>
+                0
+            <% else %>
+                <%= @offer.cost %>
+            <% end %>
+          </label>
+        </strong>
+      </td>
+    </tr>
+    <% elsif @offer.forSale == "exchange" %>
+          <td style="width: 250px">
+            <% if @offer.image_file_name.nil? %>
+                <span style="margin-right: 20px">  <%= image_tag('/No_Image.png', width: '92%', class: "img-rounded") %> </span>
+            <% else %>
+                <span style="margin-right: 20px"><%= image_tag(@offer.image, :alt => "No Image", width: '92%', class: "img-rounded") %></span>
+            <% end %>
+          </td>
+          <td style="vertical-align: text-top;">
+            <p>
+              <strong>Description:</strong>
+              <%= @offer.detail.html_safe %>
+            </p>
+          </td>
+          </tr>
+          <tr>
+            <td>
+              <% if !current_user.nil? && current_user.id != @offer.user_id  %>
+                <div style="margin-top:30px; text-align: center">
+                  <button class="big ui blue button" data-toggle="modal" data-target="#Contact"><i class="help circle icon"></i>Contact Seller</button>
+                </div>
+              <% end%>
+            </td>
+            <td>
+              <p>
+                <% if @offer.bookexpected.empty?%>
+                    Preferable book for exchange: <label id="p_Modified_Grey">&#45;&#45;&#45;&#45;</label>
+                <% else %>
+                    Preferable book for exchange: <label id="p_Modified_TealExch"><%= @offer.bookexpected %></label>
+                <% end %>
+              </p>
+            </td>
+          </tr>
+
+      <% end %>
+  </table>
+
+  <hr>
+  <!--Add a Comment -->
+  <div class="well">
+    <h3>Leave a Comment:</h3>
+    <%= form_for([@offer, @offer.offer_comments.build]) do |f| %>
+        <p>
+          <%= f.text_area :comment_body, class: 'form-control' %>
+        </p>
+        <p>
+          <button type="submit" name="commit" class="huge ui positive icon button">
+            <i class="save icon"></i>Add Comment
+          </button>
+        </p>
+    <% end %>
+  </div>
+
+  <!-- Comment -->
+  <% if @offer.offer_comments.count != 0 %>
+      <h3 class="page-header">Comments</h3>
+      <% @offer.offer_comments.each do |comment| %>
+          <% if !comment.user_id.nil? %>
+              <div class="media">
+                <% if User.find(comment.user_id).profile_pic_file_name.nil? %>
+                    <a class="pull-left" href="#">
+                      <%= image_tag('/Profile_Avatar.png', :id => "Image_Tag_Thumbnail", :class => "media-object", :alt => "No Image") %>
+                    </a>
+                <% else %>
+                    <a class="pull-left" href="#">
+                      <%= image_tag(User.find(comment.user_id).profile_pic, :id => "Image_Tag_Thumbnail", :alt => "No Image") %>
+                    </a>
+                <% end %>
+                <div class="media-body">
+                  <h2 class="media-heading"><%= User.find(comment.user_id).username %>
+                    <small><%= comment.created_at.to_datetime.strftime("%b %d, %Y at %r") %></small>
+                    <% if !current_user.nil? && current_user.id == comment.user_id %>
+                        <button class="big ui button pull-right" id="test" data-toggle="modal" data-comment-id="<%= comment.id %>" data-target="#myCommentDeleteModal">
+                          <i class="remove icon"></i>Delete
+                        </button>
+                    <% end %>
+                  </h2>
+                  <%= comment.comment_body %>
+                </div>
+              </div>
+          <% end %>
+      <% end %>
+  <% end %>
+
+
+
+  <!-- Modal for requesting product -->
+
+  <div class="modal fade" id="Contact" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div id="form-main">
+          <div id="form-div">
+            <form class="form" id="form1">
+              <h1 style="color:white;"> Contact Seller </h1>
+              <hr>
+
+              <p class="name">
+                <input name="Contact_name"  id="Contact_name" type="text" value="<%= if current_user
+                                                                                       current_user.name end %>" class="feedback-input" placeholder="Your Name" />
+              </p>
+
+              <p class="email">
+                <input name="Contact_Email" id="Contact_Email"  type="text"  value="<%= if current_user
+                                                                                          current_user.email end %>" class="feedback-input" placeholder="Your Email" />
+              </p>
+
+              <p class="text">
+                <textarea name="Contact_comment" id="Contact_comment" class="feedback-input"  placeholder="If you would like to add some comments.."></textarea>
+              </p>
+
+
+              <div class="submit">
+                <input type="submit" value="SEND" id="button-blue"/>
+                <div class="ease"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete Article</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete the article?</p>
+          </div>
+          <div class="modal-footer">
+            <a rel="nofollow" data-method="delete" href="<%= offers_path %>/<%= @offer.id %>">
+              <button class="big ui button"><i class="checkmark icon" ></i>Yes</button>
+            </a>
+            <button type="button" class="big ui button" data-dismiss="modal"><i class="remove icon"></i>No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myCommentDeleteModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete Comment</h4>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this comment?</p>
+        </div>
+        <div class="modal-footer">
+          <a rel="nofollow" data-method="delete" href="">
+            <button class="big ui button"><i class="checkmark icon"></i>Yes</button>
+          </a>
+          <button type="button" class="big ui button" data-dismiss="modal"><i class="remove icon"></i>No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    function RedirectToOffers() {
+      window.location = "<%= offers_url %>"
+    }
+    function RedirectToEdit() {
+      window.location = "<%= edit_offer_url %>"
+    }
+
+    $('#myCommentDeleteModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var commentId = button.data('comment-id') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-footer a').attr("href", "<%=offer_offer_comments_path(@offer.id)  %>/" + commentId);
+    })
+
+  </script>
+
+  </div>
+</div>

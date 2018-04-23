@@ -1,0 +1,16 @@
+<h1>C4S</h1>
+
+<p>Hi <%= @user.name %>,</p>
+
+<p>
+  Welcome to the c4s Forum. Click on the link below to activate your account:
+</p>
+
+<a href="<%= account_activations_url %>?email=<%= @user.email %>&activation=<%= @user.activation_token %>">Activate</a>
+
+<p>
+  Thanks and Regards,
+  </p>
+<p>
+  C4S Team
+</p>

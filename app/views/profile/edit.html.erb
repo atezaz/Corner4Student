@@ -1,0 +1,115 @@
+<% provide(:title, "Edit Profile") %>
+<div class="container">
+  <div class="panel-body">
+  <!-- Title -->
+  <h1 class="page-header">My Profile</h1>
+  <div class="ui buttons">
+    <button class="big ui button" onclick="RedirectToProfiles()">
+      <i class="arrow circle outline left icon"></i>Back</button>
+
+</div>
+  <hr>
+
+<div class="col-sm-12">
+  <br/><br/>
+  <% if @user != nil && @user.errors.any? %>
+      <div class="ui icon negative message">
+        <i class="remove circle icon"></i>
+        <div class="content">
+          <div class="header">
+            Please check the issues below:
+          </div>
+          <p>
+          <ul>
+            <% for message_error in @user.errors.full_messages %>
+                <li> <%= message_error %></li>
+            <% end %>
+          </ul>
+          </p>
+        </div>
+      </div>
+  <% end %>
+  <br/><br/>
+  <%= form_for :user, class:"form form-horizontal", url:profile_update_path(current_user),html: { multipart: true }, method: :patch do |f| %>
+  <div class="text-center">
+    <% if flash[:color]== "invalid"%>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <%=flash[:notice]%>
+        </div>
+    <%elsif flash[:color]== "valid" %>
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> <%=flash[:notice]%>
+        </div>
+    <%end%>
+    <% if current_user.profile_pic_file_name.nil? %>
+        <%= image_tag('/default_profile_pic.png', :id =>"Image_Tag", :alt => "No Image", class:'img-circle')%>
+    <%else%>
+        <%= image_tag(current_user.profile_pic,:id =>"Image_Tag",  :alt => "No Image", class:'img-circle') %>
+    <%end%>
+<br/>
+  </div>
+  <div class="col-sm-push-2 col-sm-8">
+    <div class="form-group">
+      <div class="form-group">
+        <%= f.label :Profile_Picture %>
+        <br>
+        <%= f.file_field 'profile_pic', class:'filestyle form-control',data: {buttonBefore: "true"} %>
+      </div>
+          <div class="form-group">
+            <%= f.label :Full_Name %>
+            <br>
+            <%= f.text_field :name, class:'form-control', value: current_user.name,maxlength: '30' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :Username %>
+            <br>
+            <%= f.text_field :username, class:'form-control', value: current_user.username,maxlength: '20' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :Email %>
+            <br>
+            <%= f.text_field :email, class:'form-control', value: current_user.email,maxlength: '30' %>
+          </div>
+      <div class="form-group">
+        <%= f.label :Phone_number %>
+        <br>
+        <table style="width: 100%">
+          <tr>
+            <td style="width: 10%"> <input type="text" id="code" style="width: 50px; margin-right: 20px" disabled="disabled" value="+49" class="form-control"/></td>
+            <td>
+              <%if current_user.phone.nil?%>
+                  <%= f.text_field :phone,id:"phone", class: 'form-control', maxlength: '11'%>
+              <%else%>
+                  <%= f.text_field :phone,id:"phone", class: 'form-control', value: current_user.phone, maxlength: '11'%>
+              <%end%>
+          </tr>
+        </table>
+      </div>
+      <div class="form-group">
+        <%= f.label :Email_Notify %>
+        <br>
+        <%= f.check_box :getEmailNotified,id:"getEmailNotified"%>
+        <label id="normalTxt" for="getEmailNotified">Receive Notification when Posting Offers and Receiving Comments.</label>
+      </div>
+      <br/>
+      <div class="form-group">
+        <button type="submit" name="commit"  class="huge ui teal icon button">
+          <i class="save icon"></i>Save</button>
+      </div>
+  <%end%>
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+<script>
+
+  function RedirectToProfiles() {
+    window.location = "<%= profile_index_path %>"
+  }
+</script>

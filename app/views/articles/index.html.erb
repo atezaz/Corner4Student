@@ -1,0 +1,164 @@
+<div class="container">
+  <h2 class="page-header">Forum Posts</h2>
+
+  <button class="ui labeled icon button" id="buttonWithMarginBtm"  onclick="RedirectToArticlesNew()">
+       <i class="add circle icon"></i>New Post
+  </button>
+
+
+  <div class="row">
+      <div class="col-lg-8 col-xs-8">
+        <ul class="nav nav-tabs">
+          <li role="presentation" <%=if @most_popular.nil? && @my_posts.nil?
+                                       "class=active"
+                                       end %> ><a href="<%=articles_path%>">Recent Posts</a></li>
+          <li role="presentation" <%=if !@most_popular.nil?
+                                       "class=active"
+                                     end %> > <a href="/articles?most_popular=true">Most Popular</a></li>
+          <% if current_user %>
+            <li role="presentation" <%=if !@my_posts.nil?
+                                         "class=active"
+                                       end %> > <a href="/articles?my_posts=true">My Posts</a></li>
+          <%end%>
+        </ul>
+        <!-- Display Posts By popularity -->
+        <% @articles.each do |article| %>
+          <table width="100%"  >
+            <tr>
+                 <div class = "ui circular labels">
+                   <td id="td_centered"><a class="ui label"><%= number_with_delimiter(article.get_upvotes.size - article.get_downvotes.size) %></a></td>
+                   <td id="td_centered"><a class="ui label"><%= number_with_delimiter(article.count_comments) %></a></td>
+                   <td id="td_centered"><a class="ui label"><%= number_with_delimiter(article.views) %></a></td>
+                 </div>
+                 <td rowspan="2">
+                   <div>
+                     <a id="a_medium" href="<%= article_path(article.id)%>"><%= article.title %></a>
+                     <br/>
+                     <% if !article.Tags.nil?%>
+                         <% tags = article.Tags.split(',')  %>
+                           <% tags.take(5).each do |tag| %>
+                             <a id="a_small" class="ui teal label"><%= tag %></a>
+                           <% end %>
+                     <% end %>
+                     <% if tags.count > 5 %>
+                         <a id="a_small" class="ui teal label">. . . </a>
+                     <%end%>
+                     <h6 class="pull-right">Posted <%= time_ago_in_words(article.created_at)%> ago by <a href="<%= profile_path(article.user_id) %>"><%= User.find_by(id: article.user_id).name  %></a>.</h6>
+                   </div>
+                 </td>
+            </tr>
+            <tr>
+                 <td id="td_centered"><h6>votes</h6></td>
+                 <td id="td_centered"><h6>comments</h6></td>
+                 <td id="td_centered"><h6>views</h6></td>
+            </tr>
+            <div class="ui fitted divider"></div>
+          </table>
+        <% end %>
+        <div class="ui fitted divider">
+          <%= will_paginate @article, renderer: BootstrapPagination::Rails %>
+        </div>
+      </div>
+      <!-- Blog Sidebar Widgets Column -->
+      <div class="col-lg-4 col-xs-4">
+        <!-- Blog Search Well -->
+        <div class="well">
+          <h4>Blog Search</h4>
+          <div class="input-group">
+              <input type="text" class="form-control" name="search" id="search" onchange="HandleIcon()" onpaste="HandleIcon()" onkeyup="HandleIcon()" onkeydown="RedirectToOnClick()" value="<%= @srch%>" placeholder="Search Posts" />
+              <span class="input-group-btn">
+                              <button class="btn btn-default" type="input" id="commit" name="commit" onclick="RedirectToArticles()">
+                                <span id="span_icon" class="<%= if(@srch.nil? || @srch.to_s.empty?)
+                                                                 "glyphicon glyphicon-search"
+                                                               else "glyphicon glyphicon-remove" end %>"></span>
+                              </button>
+                          </span>
+          </div>
+          <!-- /.input-group -->
+        </div>
+        <!-- Blog Categories Well -->
+        <div class="well">
+          <h4>Popular Tags</h4>
+          <div class="ui horizontal list">
+          <% tags =  Tag.order("count DESC").limit(10)%>
+          <% if !tags.nil?%>
+              <% tags.each do |tag| %>
+                  <div class="item">
+                    <div class="ui teal tag labels">
+                        <% if tag.name == @selected_tag %>
+                            <a class="ui label" href="/articles">
+                              <%= tag.name %>
+                              <i class="delete icon"></i>
+                            </a>
+                        <%else %>
+                            <a class="ui label" href="/articles?popular_tag=[<%= tag.name %>]">
+                              <%= tag.name %>
+                              <i class="detail"><%= tag.count %></i>
+                            </a>
+                        <% end %>
+                    </div>
+                  </div>
+              <% end %>
+          <% end %>
+         </div>
+        </div>
+
+        <div class="well">
+          <h4>Popular Topics</h4>
+          <div class="ui horizontal list">
+            <% popularTopics = Article.selectByTopic().order("count DESC").limit(10) %>
+            <% if !popularTopics.nil?%>
+                <% popularTopics.each do |topic| %>
+                    <div class="item">
+                      <div class="ui teal tag labels">
+                        <% if topic.topic_name == @selected_topic %>
+                            <a class="ui label" href="/articles">
+                              <%= topic.topic_name %>
+                              <i class="delete icon"></i>
+                            </a>
+                        <%else %>
+                            <a class="ui label" href="/articles?popular_topic=<%= topic.topic_name %>">
+                              <%= topic.topic_name %>
+                              <i class="detail"><%= topic.count %></i>
+                            </a>
+                        <% end %>
+                      </div>
+                    </div>
+                <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  <!--
+  function RedirectToArticlesNew() {
+    window.location = "<%= new_article_url %>" ;
+  }
+  function RedirectToArticles() {
+    if(document.getElementById('span_icon').className == "glyphicon glyphicon-remove"){
+      document.getElementById('search').value = "";
+      document.getElementById('span_icon').className = "glyphicon glyphicon-search"
+      window.location = "<%= articles_url %>";
+    }
+    else
+      window.location = "<%= articles_url %>?search="+document.getElementById('search').value;
+  }
+  function RedirectToOnClick() {
+    if (event.keyCode == 13)
+      window.location = "<%= articles_url %>?search="+document.getElementById('search').value;
+  }
+  function HandleIcon() {
+    if(document.getElementById('search').value.toString().length > 0)
+    {
+      document.getElementById('span_icon').className = "glyphicon glyphicon-remove";
+    }
+    else
+    {
+      document.getElementById('span_icon').className = "glyphicon glyphicon-search"
+    }
+  }
+  //-->
+</script>

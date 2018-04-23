@@ -1,0 +1,393 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require bootstrap-glyphicons
+ *= require icon
+ *= require selectize
+ *= require selectize.default
+ *= require redactor-rails
+
+ */
+
+
+.Signup_Errors{
+    list-style-type: none;
+    text-align:left;
+    margin-left:66px;
+    margin-top:50%;
+    padding: 10px;
+    color:red;
+    border:1px solid red;
+}
+.Signup_Errors_small{
+    list-style-type: none;
+    text-align:left;
+    margin-left:10px;
+    color:red;
+    border:1px solid red;
+}
+
+.notice, .valid_notice, .invalid_notice{
+    height:35px;
+    margin:auto;
+    margin-top:20px;
+}
+.notice, .invalid_notice p, .valid_notice p{
+    text-align:center;
+    margin-top:6px;
+}
+
+.notice{
+    background-color: transparent;
+}
+
+.invalid_notice{
+    background-color: #FFF6F6;
+    border:1px solid #E0B4B4;
+    color: firebrick;
+}
+.valid_notice{
+    background-color: #CCFFCC;
+    border:1px solid green;
+}
+
+#profile_pic
+{
+    margin-left: 50px;
+}
+#Image_Tag
+{
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 200px;
+    max-height: 200px;
+    margin:0 auto;
+    display: inline;
+}
+#Image_Tag_Thumbnail
+{
+    text-align: center;
+    width: 64px;
+    height: 64px;
+    border:1px solid darkgray;
+}
+
+
+
+#p_text_input
+{
+    margin-left:10px;
+}
+#p_modified
+{
+    margin-top: 20px;
+}
+#h1_margin_modified
+{
+    margin-top: 10px;
+}
+#mrg_btm
+{
+    margin-bottom: 10px;
+}
+
+#td_centered
+{
+    text-align: center;
+    width: 20px;
+    padding: 2.5px;
+}
+#a_medium
+{
+    font-size: medium;
+    margin-left: 10px;
+}
+#a_small
+{
+    margin-left: 10px;
+}
+#buttonWithMarginBtm
+{
+    margin-bottom:10px;
+}
+#lbl_red
+{
+    color: red;
+}
+
+#p_Modified_Teal
+{
+    font-size: 18px;
+    font-stretch: normal;
+    color: teal;
+    letter-spacing: 0.7px;
+    margin: 0px;
+}
+
+
+#p_Modified_Grey
+{
+    font-size: 13px;
+    font-style: italic;
+    color: #adadad;
+    letter-spacing: 0.1px;
+}
+
+
+#p_Modified_TealExch
+{
+    font-size: 15px;
+    font-style: normal;
+    color: teal;
+    letter-spacing: 0.1px;
+}
+
+
+.input-append .btn.dropdown-toggle {
+    float: none;
+}
+#paginator
+{
+    margin: 0 auto;
+}
+#td-withConstantWidth
+{
+    max-width: 60px;
+}
+#main{
+    text-align:center; /* solution */
+}
+#inline{
+    display:inline-block;
+    overflow:hidden;
+}
+#normalTxt
+{
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+#mgSmall{
+     margin:4px;
+}
+
+.offer_details_button {
+    border-radius: 4px;
+    background-color: #00b5ad;
+    border: none;
+    color: #FFFFFF;
+    font-size: 15px;
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin : 0 auto;
+    padding: 5px;
+    margin-left: 3px;
+    margin-top: 3px;
+    width: 170px;
+
+}
+
+.offer_details_button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.offer_details_button span:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.offer_details_button:hover span {
+    padding-right: 25px;
+}
+
+.offer_details_button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+
+/*Looks at the below and fix*/
+
+
+#feedback-page{
+    text-align:center;
+}
+
+#form-main{
+    width:100%;
+    float:left;
+    padding-top:0px;
+}
+
+#form-div {
+    background-color:rgba(72,72,72,0.4);
+    padding-left:35px;
+    padding-right:35px;
+    padding-top:35px;
+    padding-bottom:50px;
+    width: 450px;
+    float: left;
+    left: 50%;
+    position: absolute;
+    margin-top:30px;
+    margin-left: -260px;
+    -moz-border-radius: 7px;
+    -webkit-border-radius: 7px;
+}
+
+.feedback-input {
+    color:#3c3c3c;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight:500;
+    font-size: 18px;
+    border-radius: 0;
+    line-height: 22px;
+    background-color: #fbfbfb;
+    padding: 13px 13px 13px 54px;
+    margin-bottom: 10px;
+    width:100%;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 3px solid rgba(0,0,0,0);
+}
+
+.feedback-input:focus{
+    background: #fff;
+    box-shadow: 0;
+    border: 3px solid #3498db;
+    color: #3498db;
+    outline: none;
+    padding: 13px 13px 13px 54px;
+}
+
+.focused{
+    color:#30aed6;
+    border:#30aed6 solid 3px;
+}
+
+/* Icons ---------------------------------- */
+#Contact_name{
+    background-image: url(http://rexkirby.com/kirbyandson/images/name.svg);
+    background-size: 30px 30px;
+    background-position: 11px 8px;
+    background-repeat: no-repeat;
+}
+
+#Contact_name:focus{
+    background-image: url(http://rexkirby.com/kirbyandson/images/name.svg);
+    background-size: 30px 30px;
+    background-position: 8px 5px;
+    background-position: 11px 8px;
+    background-repeat: no-repeat;
+}
+
+#Contact_Email{
+    background-image: url(http://rexkirby.com/kirbyandson/images/email.svg);
+    background-size: 30px 30px;
+    background-position: 11px 8px;
+    background-repeat: no-repeat;
+}
+
+#Contact_Email:focus{
+    background-image: url(http://rexkirby.com/kirbyandson/images/email.svg);
+    background-size: 30px 30px;
+    background-position: 11px 8px;
+    background-repeat: no-repeat;
+}
+
+#Contact_comment{
+    background-image: url(http://rexkirby.com/kirbyandson/images/comment.svg);
+    background-size: 30px 30px;
+    background-position: 11px 8px;
+    background-repeat: no-repeat;
+
+    width: 100%;
+    height: 150px;
+    line-height: 150%;
+    resize:vertical;
+}
+
+input:hover, textarea:hover,
+input:focus, textarea:focus {
+    background-color:white;
+}
+
+#button-blue{
+    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+    float:left;
+    width: 100%;
+    border: #fbfbfb solid 4px;
+    cursor:pointer;
+    background-color: #3498db;
+    color:white;
+    font-size:24px;
+    padding-top:22px;
+    padding-bottom:22px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    margin-top:-4px;
+    font-weight:700;
+}
+
+#button-blue:hover{
+    background-color: rgba(0,0,0,0);
+    color: #0493bd;
+}
+
+.submit:hover {
+    color: #3498db;
+}
+
+.ease {
+    width: 0px;
+    height: 74px;
+    background-color: #fbfbfb;
+    -webkit-transition: .3s ease;
+    -moz-transition: .3s ease;
+    -o-transition: .3s ease;
+    -ms-transition: .3s ease;
+    transition: .3s ease;
+}
+
+.submit:hover .ease{
+    width:100%;
+    background-color:white;
+}
+
+@media only screen and (max-width: 580px) {
+    #form-div{
+        left: 3%;
+        margin-right: 3%;
+        width: 88%;
+        margin-left: 0;
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+}

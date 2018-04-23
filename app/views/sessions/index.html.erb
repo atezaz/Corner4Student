@@ -1,0 +1,53 @@
+<% provide(:title, "Log in") %>
+
+<div class="container vertical-center">
+	<div class="col-sm-push-4 col-sm-4">
+    <div class="ui middle aligned center aligned grid">
+      <div class="column">
+        <h1 class="ui teal image header">
+          <img src="assets/favicon.png" class="image">
+          <div class="content">
+            Log-in to your account
+          </div>
+        </h1>
+      </div>
+    </div>
+
+		<%= form_for(:session, url: login_path, data: {toggle: "validator"} ) do |f| %>
+      <br/><br/>
+      <% if flash[:color]== "invalid"%>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> <%=flash[:notice]%>
+            </div>
+      <%elsif flash[:color]== "valid" %>
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> <%=flash[:notice]%>
+            </div>
+      <%end%>
+
+      <div class="form-group">
+        <%= f.text_field :username_or_email,id:"username_or_email", class: 'form-control', placeholder: 'Username or Email Address' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.password_field :login_password,id:'login_password', class: 'form-control', placeholder: 'Password' %>
+      </div>
+
+       <div class="form-group">
+         <a href="<%= password_resets_new_path %>">Forgot Password?</a>
+       </div>
+      <div>
+        <%= f.submit "Login", class: "huge ui teal icon button btn-block" %>
+      </div>
+      <% end %>
+		<br>
+		<p>
+			New to us? <%= link_to "Sign up", signup_path %>
+		</p>
+	</div>
+
+</div>
